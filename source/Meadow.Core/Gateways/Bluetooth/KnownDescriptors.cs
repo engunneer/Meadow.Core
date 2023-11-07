@@ -25,7 +25,7 @@ public static class KnownDescriptors
     /// <returns>A <see cref="KnownDescriptor"/> instance representing the descriptor.</returns>
     public static KnownDescriptor Lookup(Guid id)
     {
-        return LookupTable.ContainsKey(id) ? LookupTable[id] : new KnownDescriptor("Unknown descriptor", Guid.Empty);
+        return LookupTable.TryGetValue(id, out var value) ? value : new KnownDescriptor("Unknown descriptor", Guid.Empty);
     }
 
     private static readonly IList<KnownDescriptor> Descriptors = new List<KnownDescriptor>()

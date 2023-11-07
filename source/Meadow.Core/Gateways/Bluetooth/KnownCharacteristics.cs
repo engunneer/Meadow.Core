@@ -21,7 +21,7 @@ public static class KnownCharacteristics
     /// <returns>A <see cref="KnownCharacteristic"/> instance representing the characteristic.</returns>
     public static KnownCharacteristic Lookup(Guid id)
     {
-        return LookupTable.ContainsKey(id) ? LookupTable[id] : new KnownCharacteristic("Unknown characteristic", Guid.Empty);
+        return LookupTable.TryGetValue(id, out var value) ? value : new KnownCharacteristic("Unknown characteristic", Guid.Empty);
     }
 
     private static readonly Dictionary<Guid, KnownCharacteristic> LookupTable;

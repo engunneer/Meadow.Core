@@ -25,7 +25,7 @@ public static class KnownServices
     /// <returns>A <see cref="KnownService"/> instance representing the service.</returns>
     public static KnownService Lookup(Guid id)
     {
-        return LookupTable.ContainsKey(id) ? LookupTable[id] : new KnownService("Unknown Service", Guid.Empty);
+        return LookupTable.TryGetValue(id, out var value) ? value : new KnownService("Unknown Service", Guid.Empty);
     }
 
     private static readonly IList<KnownService> Services = new List<KnownService>()

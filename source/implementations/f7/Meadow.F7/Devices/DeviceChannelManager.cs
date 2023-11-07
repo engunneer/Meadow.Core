@@ -168,9 +168,9 @@ namespace Meadow.Hardware
                 }
 
                 // PWMs on a single timer must have the same frequency (but can have different duty cycles)
-                if (_pwmTimerFrequencies.ContainsKey(channelInfo.Timer))
+                if (_pwmTimerFrequencies.TryGetValue(channelInfo.Timer, out var timerFrequency))
                 {
-                    var currentFrequency = new Frequency(_pwmTimerFrequencies[channelInfo.Timer], Frequency.UnitType.Hertz);
+                    var currentFrequency = new Frequency(timerFrequency, Frequency.UnitType.Hertz);
                     if (currentFrequency != frequency)
                     {
                         return new Tuple<bool, string>(false, $"PWM Timer frequency cannot be different between separate channels. PWM Timer {channelInfo.Timer} is already set to {currentFrequency} Hz");
