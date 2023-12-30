@@ -22,11 +22,11 @@ public partial class F7FeatherV1 : F7FeatherBase
                 new NetworkCapabilities(true, false),
                 new StorageCapabilities(false))
     {
-        if (this.Information.Platform != Hardware.MeadowPlatform.F7FeatherV1)
+        if (Information.Platform != MeadowPlatform.F7FeatherV1)
         {
-            var message = $"Application is defined as {nameof(F7FeatherV1)}, but running hardware is {this.Information.Platform}";
+            var message = $"Application is defined as {nameof(F7FeatherV1)}, but running hardware is {Information.Platform}";
             Resolver.Log.Error(message);
-            throw new UnsupportedPlatformException(this.Information.Platform, message);
+            throw new UnsupportedPlatformException(Information.Platform, message);
         }
 
         Pins.Controller = this;
@@ -58,7 +58,7 @@ public partial class F7FeatherV1 : F7FeatherBase
 /// <returns></returns>
 protected override int GetI2cBusNumberForPins(IPin clock, IPin data)
     {
-        if (clock.Name == (Pins as F7FeatherV1.Pinout)?.I2C_SCL.Name)
+        if (clock.Name == (Pins as Pinout)?.I2C_SCL.Name)
         {
             return 1;
         }
@@ -69,9 +69,8 @@ protected override int GetI2cBusNumberForPins(IPin clock, IPin data)
 }
 
 /// <summary>
-/// Represents an F7Micro1 device.
+/// Represents an F7Micro v1 device.
 /// </summary>
 [Obsolete("Use the F7FeatherV1 class instead.", true)]
 public class F7Micro : F7FeatherV1
-{
-}
+{ }

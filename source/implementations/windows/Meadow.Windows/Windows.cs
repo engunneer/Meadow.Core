@@ -8,19 +8,13 @@ namespace Meadow;
 
 public class Windows : IMeadowDevice, IPixelDisplayProvider
 {
-    private readonly Lazy<NativeNetworkAdapterCollection> _networkAdapters;
+    private readonly Lazy<NativeNetworkAdapterCollection> _networkAdapters = new(
+        new NativeNetworkAdapterCollection());
 
-    public IPlatformOS PlatformOS { get; }
+    public IPlatformOS PlatformOS { get; } = new WindowsPlatformOS();
     public DeviceCapabilities Capabilities { get; private set; }
     public IDeviceInformation Information { get; private set; }
     public INetworkAdapterCollection NetworkAdapters => _networkAdapters.Value;
-
-    public Windows()
-    {
-        PlatformOS = new WindowsPlatformOS();
-        _networkAdapters = new Lazy<NativeNetworkAdapterCollection>(
-            new NativeNetworkAdapterCollection());
-    }
 
     /// <inheritdoc/>
     public void Initialize(MeadowPlatform detectedPlatform)
@@ -64,12 +58,12 @@ public class Windows : IMeadowDevice, IPixelDisplayProvider
         throw new NotSupportedException("Add an IO Expander to your platform");
     }
 
-    public ISpiBus CreateSpiBus(IPin clock, IPin mosi, IPin miso, SpiClockConfiguration config)
+    public ISpiBus CreateSpiBus(IPin clock, IPin copi, IPin cipo, SpiClockConfiguration config)
     {
         throw new NotSupportedException("Add an IO Expander to your platform");
     }
 
-    public ISpiBus CreateSpiBus(IPin clock, IPin mosi, IPin miso, Frequency speed)
+    public ISpiBus CreateSpiBus(IPin clock, IPin copi, IPin cipo, Frequency speed)
     {
         throw new NotSupportedException("Add an IO Expander to your platform");
     }
@@ -89,7 +83,6 @@ public class Windows : IMeadowDevice, IPixelDisplayProvider
         throw new NotSupportedException("Add an IO Expander to your platform");
     }
 
-
     public ISerialPort CreateSerialPort(string portName, int baudRate = 9600, int dataBits = 8, Parity parity = Parity.None, StopBits stopBits = StopBits.One, int readBufferSize = 1024)
     {
         if (PlatformOS.GetSerialPortName(portName) is { } name)
@@ -97,7 +90,7 @@ public class Windows : IMeadowDevice, IPixelDisplayProvider
             return CreateSerialPort(name, baudRate, dataBits, parity, stopBits, readBufferSize);
         }
 
-        throw new ArgumentException($"Port name '{portName}' not found");
+        throw new ArgumentException($"Port name '{portName}' not found", nameof(portName));
     }
 
     public ISerialPort CreateSerialPort(SerialPortName portName, int baudRate = 9600, int dataBits = 8, Parity parity = Parity.None, StopBits stopBits = StopBits.One, int readBufferSize = 1024)
@@ -117,13 +110,7 @@ public class Windows : IMeadowDevice, IPixelDisplayProvider
         return SerialMessagePort.From(port, prefixDelimiter, preserveDelimiter, messageLength);
     }
 
-
-
-
-
-
     // TODO: implement everything below here
-
 
     public event NetworkConnectionHandler NetworkConnected = default!;
     public event NetworkDisconnectionHandler NetworkDisconnected = default!;
