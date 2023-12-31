@@ -59,24 +59,21 @@ internal class SensorService : ISensorService
     /// <inheritdoc/>
     public void RegisterSensor(ISensor sensor)
     {
-        if (sensor is IPollingSensor s)
+        if (sensor is IPollingSensor { UpdateInterval.TotalSeconds: >= 1 } s)
         {
-            if (s.UpdateInterval.TotalSeconds >= 1)
+            if (_pollMonitor == null)
             {
-                if (_pollMonitor == null)
-                {
-                    _pollMonitor = new ThreadedPollingSensorMonitor();
-                }
-
-                // don't migrate fast-polling sensors to the threaded monitor
-                s.SensorMonitor?.StopSampling(s);
-
-                s.StopUpdating();
-
-                s.SensorMonitor = _pollMonitor;
-
-                _pollMonitor.StartSampling(s);
+                _pollMonitor = new ThreadedPollingSensorMonitor();
             }
+
+            // don't migrate fast-polling sensors to the threaded monitor
+            s.SensorMonitor?.StopSampling(s);
+
+            s.StopUpdating();
+
+            s.SensorMonitor = _pollMonitor;
+
+            _pollMonitor.StartSampling(s);
         }
 
         if (sensor is ISleepAwarePeripheral sp)

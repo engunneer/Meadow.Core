@@ -53,7 +53,7 @@ public class Service : IService
                         ""uuid"":{Uuid}
                     ";
 
-        if (Characteristics != null && Characteristics.Count > 0)
+        if (Characteristics is { Count: > 0 })
         {
             json += ", \"characteristics\": [";
             for (int i = 0; i < Characteristics.Count; i++)

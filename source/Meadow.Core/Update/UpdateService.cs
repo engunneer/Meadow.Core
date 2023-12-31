@@ -122,7 +122,7 @@ public class UpdateService : IUpdateService, ICommandService
         if (State == UpdateState.Dead)
         {
             // using Thread instead of a Task because of a bug (in the runtime or BCL)
-            new Thread(() => UpdateStateMachine())
+            new Thread(UpdateStateMachine)
                 .Start();
         }
     }
@@ -303,7 +303,7 @@ public class UpdateService : IUpdateService, ICommandService
                         ClientOptions = builder.Build();
                     }
 
-                    if (nic != null && nic.IsConnected)
+                    if (nic is { IsConnected: true })
                     {
                         try
                         {
@@ -425,10 +425,7 @@ public class UpdateService : IUpdateService, ICommandService
     {
         State = UpdateState.DownloadingFile;
 
-        UpdateMessage? message;
-
-
-        if (!Store.TryGetMessage(updateInfo.ID, out message))
+        if (!Store.TryGetMessage(updateInfo.ID, out UpdateMessage? message))
         {
             throw new ArgumentException($"Cannot find update with ID {updateInfo.ID}");
         }
@@ -485,24 +482,17 @@ public class UpdateService : IUpdateService, ICommandService
                     // the 'totalBytesDownloaded' byte position and extending to the end of the content.
                     httpClient.DefaultRequestHeaders.Range = new System.Net.Http.Headers.RangeHeaderValue(totalBytesDownloaded, null);
 
-                    using (var stream = await httpClient.GetStreamAsync(destination))
+                    using var stream = await httpClient.GetStreamAsync(destination);
+                    using var fileStream = Store.GetUpdateFileStream(message.ID);
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+
+                    while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                     {
-                        using (var fileStream = Store.GetUpdateFileStream(message.ID))
-                        {
-                            byte[] buffer = new byte[4096];
-                            int bytesRead;
+                        await fileStream.WriteAsync(buffer, 0, bytesRead);
+                        totalBytesDownloaded += bytesRead;
 
-                            while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                            {
-                                await fileStream.WriteAsync(buffer, 0, bytesRead);
-                                totalBytesDownloaded += bytesRead;
-
-                                message.DownloadProgress = totalBytesDownloaded;
-
-                                OnUpdateProgress?.Invoke(this, message);
-                                Resolver.Log.Trace($"Download progress: {totalBytesDownloaded:N0} bytes downloaded");
-                            }
-                        }
+                        Resolver.Log.Trace($"Download progress: {totalBytesDownloaded:N0} bytes downloaded");
                     }
                 }
 
@@ -539,7 +529,7 @@ public class UpdateService : IUpdateService, ICommandService
                 }
                 else
                 {
-                    Resolver.Log.Warn("Downloaded Updated was not Hashed by server!");
+                    Resolver.Log.Warn("Downloaded Update was not Hashed by server!");
                     // TODO: what do we do?
                 }
 
@@ -591,7 +581,7 @@ public class UpdateService : IUpdateService, ICommandService
         }
 
         // make sure that some files exist - no files would brick us.  A bad set still can
-        return appDir.GetFiles().Count() > 0;
+        return appDir.GetFiles().Any();
     }
 
     private bool CurrentUpdateContainsOSUpdate()
@@ -604,7 +594,7 @@ public class UpdateService : IUpdateService, ICommandService
         }
 
         // make sure that some files exist
-        return osDir.GetFiles().Count() > 0;
+        return osDir.GetFiles().Any();
     }
 
     private void DisplayTree(DirectoryInfo di)
@@ -711,7 +701,7 @@ public class UpdateService : IUpdateService, ICommandService
         {
             Resolver.Log.Error($"Failed to extract update package: {ex.Message}");
             OnUpdateFailure?.Invoke(this, updateInfo);
-            throw ex;
+            throw;
         }
 
         // do we actually contain an update?

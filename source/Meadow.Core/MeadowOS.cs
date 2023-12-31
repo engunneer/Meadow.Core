@@ -566,19 +566,13 @@ public static partial class MeadowOS
             }
 
             // feels off, but not seeing a super clean way without the generics, etc.
-            if (appType.GetProperty(nameof(IApp.CancellationToken)) is PropertyInfo pi)
+            if (appType.GetProperty(nameof(IApp.CancellationToken)) is { CanWrite: true } pi)
             {
-                if (pi.CanWrite)
-                {
-                    pi.SetValue(app, AppAbort.Token);
-                }
+                pi.SetValue(app, AppAbort.Token);
             }
-            if (appType.GetProperty(nameof(IApp.Settings)) is PropertyInfo spi)
+            if (appType.GetProperty(nameof(IApp.Settings)) is { CanWrite: true } spi)
             {
-                if (spi.CanWrite)
-                {
-                    spi.SetValue(app, settings);
-                }
+                spi.SetValue(app, settings);
             }
 
             App = app;
@@ -687,7 +681,7 @@ public static partial class MeadowOS
                 restart = LifecycleSettings.AppFailureRestartDelaySeconds;
             }
 
-            if (CurrentDevice != null && CurrentDevice.PlatformOS != null)
+            if (CurrentDevice is { PlatformOS: not null })
             {
                 Resolver.Log.Info($"CRASH: Meadow will restart in {restart} seconds.");
                 Thread.Sleep(restart * 1000);

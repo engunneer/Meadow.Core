@@ -13,16 +13,16 @@ internal class ThreadedPollingSensorMonitor : ISensorMonitor
     public event EventHandler<object> SampleAvailable = default!;
 
     private readonly List<SensorMeta> _metaList = new();
-    private readonly Thread _sampleThread;
+    private readonly Thread _sampleThread;      
     private readonly Random _random = new();
     private readonly TimeSpan PollPeriod = TimeSpan.FromSeconds(1);
 
     private class SensorMeta
     {
-        public SensorMeta(ISamplingSensor sensor, MethodInfo readmethod)
+        public SensorMeta(ISamplingSensor sensor, MethodInfo readMethod)
         {
             Sensor = sensor;
-            ReadMethod = readmethod;
+            ReadMethod = readMethod;
         }
 
         public ISamplingSensor Sensor { get; set; }
@@ -77,7 +77,7 @@ internal class ThreadedPollingSensorMonitor : ISensorMonitor
                 // skip "disabled" (i.e. StopUpdating has been called) sensors
                 if (!meta.EnableReading) continue;
 
-                // check for the reading due tiime (1s granularity for now)
+                // check for the reading due time (1s granularity for now)
                 var remaining = meta.NextReading.Subtract(TimeSpan.FromSeconds(1));
 
                 if (remaining.TotalSeconds <= 0)
@@ -99,7 +99,7 @@ internal class ThreadedPollingSensorMonitor : ISensorMonitor
                         var value = meta.ResultProperty.GetValue(task);
 
                         // raise an event - not ideal as all sensors get events for all other sensors
-                        // fixing this requires eitehr exposing a "set" method, which I'd prefer be kept internal
+                        // fixing this requires either exposing a "set" method, which I'd prefer be kept internal
                         // or using reflection to find a set method, which is fragile
                         SampleAvailable?.Invoke(meta.Sensor, value);
                     }

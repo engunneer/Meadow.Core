@@ -177,10 +177,7 @@ namespace Meadow.Hardware
         public override float Period
         {
             get => 1.0f / (float)Frequency.Hertz * (float)TimeScale;
-            set
-            {
-                Frequency = new Frequency(1.0f * (float)TimeScale / value);
-            }
+            set => Frequency = new Frequency(1.0f * (float)TimeScale / value);
         }
 
         private void UpdateChannel()
@@ -192,10 +189,7 @@ namespace Meadow.Hardware
         /// <summary>
         /// Returns <c>true</c> if the PWM is currently running, otherwise <c>false</c>
         /// </summary>
-        public override bool State
-        {
-            get => _isRunning;
-        }
+        public override bool State => _isRunning;
 
         /// <summary>
         /// Starts the PWM output

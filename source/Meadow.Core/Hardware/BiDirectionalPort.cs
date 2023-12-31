@@ -94,7 +94,7 @@ public class BiDirectionalPort : BiDirectionalPortBase
         PortDirectionType initialDirection = PortDirectionType.Input
         )
     {
-        return From(pin, ioController, initialState, resistorMode, initialDirection);
+        return From(pin, ioController, initialState, resistorMode, initialDirection, OutputType.PushPull);
     }
 
     /// <summary>

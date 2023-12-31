@@ -283,20 +283,18 @@ namespace Meadow.Hardware
         /// <summary>
         /// Gets an array of all of the speeds that the SPI bus supports.
         /// </summary>
-        public Units.Frequency[] SupportedSpeeds
-        {
-            get => new Units.Frequency[]
-                {
-                    new Units.Frequency(375, Units.Frequency.UnitType.Kilohertz),
-                    new Units.Frequency(750, Units.Frequency.UnitType.Kilohertz),
-                    new Units.Frequency(1500, Units.Frequency.UnitType.Kilohertz),
-                    new Units.Frequency(3000, Units.Frequency.UnitType.Kilohertz),
-                    new Units.Frequency(6000, Units.Frequency.UnitType.Kilohertz),
-                    new Units.Frequency(12000, Units.Frequency.UnitType.Kilohertz),
-                    new Units.Frequency(24000, Units.Frequency.UnitType.Kilohertz),
-                    new Units.Frequency(48000, Units.Frequency.UnitType.Kilohertz)
-                };
-        }
+        public Units.Frequency[] SupportedSpeeds =>
+            new Units.Frequency[]
+            {
+                new Units.Frequency(375, Units.Frequency.UnitType.Kilohertz),
+                new Units.Frequency(750, Units.Frequency.UnitType.Kilohertz),
+                new Units.Frequency(1500, Units.Frequency.UnitType.Kilohertz),
+                new Units.Frequency(3000, Units.Frequency.UnitType.Kilohertz),
+                new Units.Frequency(6000, Units.Frequency.UnitType.Kilohertz),
+                new Units.Frequency(12000, Units.Frequency.UnitType.Kilohertz),
+                new Units.Frequency(24000, Units.Frequency.UnitType.Kilohertz),
+                new Units.Frequency(48000, Units.Frequency.UnitType.Kilohertz)
+            };
 
         private void SetBitsPerWord(int bitsPerWord)
         {

@@ -38,7 +38,7 @@ public class Definition : IDefinition
                         ""deviceName"":""{DeviceName}""
                     ";
 
-        if (Services != null && Services.Count > 0)
+        if (Services is { Count: > 0 })
         {
             json += ", \"services\": [";
             for (int i = 0; i < Services.Count; i++)

@@ -15,7 +15,9 @@ public class DigitalInterruptPort : DigitalInterruptPortBase
     private DigitalState _newState = new DigitalState(false, -1);
     private DigitalState _oldState = new DigitalState(false, -1);
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// The Meadow I/O controller.
+    /// </summary>
     protected IMeadowIOController IOController { get; set; }
 
     private int LastEventTime { get; set; } = -1;
@@ -195,7 +197,7 @@ public class DigitalInterruptPort : DigitalInterruptPortBase
         get => _debounceDuration;
         set
         {
-            if (value.TotalMilliseconds < 0.0 || value.TotalMilliseconds > 1000.0) throw new ArgumentOutOfRangeException("DebounceDuration");
+            if (value.TotalMilliseconds is < 0.0 or > 1000.0) throw new ArgumentOutOfRangeException(nameof(DebounceDuration), value, null);
             if (value == _debounceDuration) return;
 
             _debounceDuration = value;
@@ -215,7 +217,7 @@ public class DigitalInterruptPort : DigitalInterruptPortBase
         get => _glitchDuration;
         set
         {
-            if (value.TotalMilliseconds < 0.0 || value.TotalMilliseconds > 1000.0) throw new ArgumentOutOfRangeException("GlitchDuration");
+            if (value.TotalMilliseconds is < 0.0 or > 1000.0) throw new ArgumentOutOfRangeException(nameof(GlitchDuration), value, null);
             if (value == _glitchDuration) return;
 
             _glitchDuration = value;

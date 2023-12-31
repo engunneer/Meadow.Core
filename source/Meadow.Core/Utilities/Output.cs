@@ -213,8 +213,8 @@ namespace Meadow.Devices
         J301-9      ADC1_IN10       PC0         A4
         J301-10     ADC1_IN11       PC1         A5
         J301-11     SPI3_CLK        PC10        SCK
-        J301-12     SPI3_MOSI       PB5         MOSI    AF6
-        J301-13     SPI3_MISO       PC11        MISO    AF6
+        J301-12     SPI3_COPI       PB5         COPI    AF6
+        J301-13     SPI3_CIPO       PC11        CIPO    AF6
         J301-14     UART4_RX        PI9         D00     AF8
         J301-15     UART4_TX        PH13        D01     AF8
         J301-16     PC6             PC6         D02                 *
