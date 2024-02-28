@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 public abstract class App<D> : IApp, IAsyncDisposable
         where D : class, IMeadowDevice
 {
-    private readonly ExecutionContext executionContext;
+    private ExecutionContext executionContext;
 
     /// <inheritdoc/>
     public CancellationToken CancellationToken { get; internal set; } = default!;

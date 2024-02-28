@@ -1,4 +1,5 @@
-﻿namespace Meadow.Gateways.Bluetooth
+﻿using System;
+namespace Meadow.Gateways.Bluetooth
 {
     /// <summary>
     /// Specifies how a value should be written.

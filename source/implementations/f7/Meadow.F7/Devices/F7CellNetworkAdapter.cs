@@ -21,7 +21,7 @@ internal unsafe class F7CellNetworkAdapter : NetworkAdapterBase, ICellNetworkAda
     private string? _at_cmds_output;
 
     /// <summary>
-    /// Extract values from <paramref name="input"/> based on the provided regex <paramref name="pattern"/>
+    /// Extract values from an <b>input</b> string based on a regex <b>pattern</b>
     /// </summary>
     private static string ExtractValue(string? input, string pattern)
     {
@@ -46,7 +46,7 @@ internal unsafe class F7CellNetworkAdapter : NetworkAdapterBase, ICellNetworkAda
     {
         _at_cmds_output = "";
         _csq = null;
-        // Since the IMEI doesn't depend on the connection, it'll not be reset.
+        // Since the IMEI doesn't depend on the connection, it'll not be reseted.
     }
 
     /// <summary>
@@ -346,7 +346,7 @@ internal unsafe class F7CellNetworkAdapter : NetworkAdapterBase, ICellNetworkAda
 
         CellSetState(CellNetworkState.Resumed);
 
-        if (string.IsNullOrEmpty(_at_cmds_output))
+        if (_at_cmds_output == null)
         {
             throw new System.IO.IOException("No available networks");
         }
@@ -358,7 +358,7 @@ internal unsafe class F7CellNetworkAdapter : NetworkAdapterBase, ICellNetworkAda
     /// Execute GNSS-related AT commands and retrieve combined output, including NMEA sentences.
     /// </summary>
     /// <param name="resultTypes">An array of supported GNSS result types for data processing.</param>
-    /// <param name="timeout">Timeout length, in seconds.</param>
+    /// <param name="timeout">The timeout in milliseconds</param>
     /// <returns>A string containing combined output from GNSS-related AT commands, including NMEA sentences.</returns>
     public string FetchGnssAtCmdsOutput(IGnssResult[] resultTypes, int timeout)
     {

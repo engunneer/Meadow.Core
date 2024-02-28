@@ -100,7 +100,7 @@
                         ""props"":{(int)Properties},
                         ""len"":{MaxLength}";
 
-            if (Descriptors is { Length: > 0 })
+            if (Descriptors != null && Descriptors.Length > 0)
             {
                 json += ", \"descriptors\": [";
                 for (int i = 0; i < Descriptors.Length; i++)

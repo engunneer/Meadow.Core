@@ -19,10 +19,10 @@ internal static class RSAExtensions
         SubjectPublicKeyInfo
     }
 
-    private const string RsaPublicKeyPemHeader = "-----BEGIN RSA PUBLIC KEY-----";
-    private const string RsaPublicKeyPemFooter = "-----END RSA PUBLIC KEY-----";
-    private const string RsaPrivateKeyPemHeader = "-----BEGIN RSA PRIVATE KEY-----";
-    private const string RsaPrivateKeyPemFooter = "-----END RSA PRIVATE KEY-----";
+    private const string RsaPublickeyPemHeader = "-----BEGIN RSA PUBLIC KEY-----";
+    private const string RsaPublickeyPemFooter = "-----END RSA PUBLIC KEY-----";
+    private const string RsaPrivatekeyPemHeader = "-----BEGIN RSA PRIVATE KEY-----";
+    private const string RsaPrivatekeyPemFooter = "-----END RSA PRIVATE KEY-----";
     private const string SubjectPublicKeyInfoPemHeader = "-----BEGIN PUBLIC KEY-----";
     private const string SubjectPublicKeyInfoPemFooter = "-----END PUBLIC KEY-----";
 
@@ -52,13 +52,13 @@ internal static class RSAExtensions
         {
             format = RsaPublicKeyFormat.SubjectPublicKeyInfo;
         }
-        else if (source.StartsWith(RsaPublicKeyPemHeader) &&
-                 source.EndsWith(RsaPublicKeyPemFooter))
+        else if (source.StartsWith(RsaPublickeyPemHeader) &&
+                 source.EndsWith(RsaPublickeyPemFooter))
         {
             format = RsaPublicKeyFormat.RsaPublicKey;
         }
-        else if (source.StartsWith(RsaPrivateKeyPemHeader) &&
-                 source.EndsWith(RsaPrivateKeyPemFooter))
+        else if (source.StartsWith(RsaPrivatekeyPemHeader) &&
+                 source.EndsWith(RsaPrivatekeyPemFooter))
         {
             format = RsaPublicKeyFormat.RsaPrivateKey;
         }

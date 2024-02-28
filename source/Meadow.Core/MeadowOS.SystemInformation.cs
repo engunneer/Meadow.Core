@@ -36,6 +36,6 @@ public static partial class MeadowOS
         /// it is assumed to have crashed.
         /// </summary>
         /// <remarks>A value of 0 indicates an infinite period.</remarks>
-        public static uint InitializationTimeout => CurrentDevice.PlatformOS.InitializationTimeout;
+        public static uint InitizationTimeout => CurrentDevice.PlatformOS.InitializationTimeout;
     }
 }

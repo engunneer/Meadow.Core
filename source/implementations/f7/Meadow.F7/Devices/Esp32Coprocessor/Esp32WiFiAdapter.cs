@@ -59,7 +59,7 @@ internal class Esp32WiFiAdapter : NetworkAdapterBase, IWiFiNetworkAdapter
     /// <summary>
     /// Record if the WiFi ESP32 is connected to an access point.
     /// </summary>
-    public override bool IsConnected => _isConnected;
+    public override bool IsConnected { get => _isConnected; }
 
     /// <inheritdoc/>
     public override string Name => "ESP32 WiFi";
@@ -116,12 +116,18 @@ internal class Esp32WiFiAdapter : NetworkAdapterBase, IWiFiNetworkAdapter
     /// <remarks>
     /// This will automatically connect to any preconfigured access points if they are available.
     /// </remarks>
-    public bool AutoConnect => F7PlatformOS.GetBoolean(IPlatformOS.ConfigurationValues.AutomaticallyStartNetwork);
+    public bool AutoConnect
+    {
+        get => F7PlatformOS.GetBoolean(IPlatformOS.ConfigurationValues.AutomaticallyStartNetwork);
+    }
 
     /// <summary>
     /// Automatically try to reconnect to an access point if there is a problem / disconnection?
     /// </summary>
-    public bool AutoReconnect => F7PlatformOS.GetBoolean(IPlatformOS.ConfigurationValues.AutomaticallyReconnect);
+    public bool AutoReconnect
+    {
+        get => F7PlatformOS.GetBoolean(IPlatformOS.ConfigurationValues.AutomaticallyReconnect);
+    }
 
     /// <summary>
     /// Default access point to try to connect to if the network interface is started and the board
@@ -200,7 +206,7 @@ internal class Esp32WiFiAdapter : NetworkAdapterBase, IWiFiNetworkAdapter
     /// <exception cref="ArgumentOutOfRangeException">Exception is thrown if value is less than <see cref="MinimumScanPeriod"/> or greater than <see cref="MaximumScanPeriod"/>.</exception>
     public TimeSpan ScanPeriod
     {
-        get => _scanPeriod;
+        get { return _scanPeriod; }
         set
         {
             if ((value < MinimumScanPeriod) || (value > MaximumScanPeriod))

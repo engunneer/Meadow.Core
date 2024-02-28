@@ -103,7 +103,7 @@ public class HealthReporter : IHealthReporter
             size += fi.Length;
         }
 
-        // Add sub-directory sizes.
+        // Add subdirectory sizes.
         DirectoryInfo[] dis = d.GetDirectories();
         foreach (DirectoryInfo di in dis)
         {

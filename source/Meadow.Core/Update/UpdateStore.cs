@@ -193,9 +193,11 @@ public class UpdateStore : IEnumerable<UpdateInfo>
     /// <param name="file">The file to hash</param>
     public string GetFileHash(FileInfo file)
     {
-        using var sha = SHA256.Create();
-        using var stream = file.OpenRead();
-        return BitConverter.ToString(sha.ComputeHash(stream)).Replace("-", "");
+        using (var sha = SHA256.Create())
+        using (var stream = file.OpenRead())
+        {
+            return BitConverter.ToString(sha.ComputeHash(stream)).Replace("-", "");
+        }
     }
 
     internal void SetRetrieved(UpdateMessage message)

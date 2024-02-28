@@ -208,6 +208,7 @@ public class AnalogInputPort : AnalogInputPortBase, IObservable<IChangeResult<Vo
                     // save the previous voltage
                     PreviousVoltageReading = newVoltage;
 
+
                     // sleep for the appropriate interval
                     await Task.Delay(UpdateInterval);
                 }

@@ -19,7 +19,7 @@ public abstract class ConfigurableObject
     /// </summary>
     public const string DefaultYamlFileName = "app.config.yaml";
 
-    private string _parentName = default!;
+    private string m_parentname = default!;
     private bool m_isArrayElement = false;
 
     private string PathTypeName { get; }
@@ -55,23 +55,23 @@ public abstract class ConfigurableObject
         {
             if (parent is ConfigurableObject p)
             {
-                if (!string.IsNullOrEmpty(p!._parentName))
+                if (!string.IsNullOrEmpty(p!.m_parentname))
                 {
-                    _parentName = $"{p!._parentName}:{parent.GetType().Name}";
+                    m_parentname = $"{p!.m_parentname}:{parent.GetType().Name}";
                 }
                 else
                 {
-                    _parentName = parent.GetType().Name;
+                    m_parentname = parent.GetType().Name;
                 }
             }
             else
             {
                 if (!parent.Equals(string.Empty))
                 {
-                    _parentName = parent.GetType().Name;
+                    m_parentname = parent.GetType().Name;
                 }
             }
-            if (_parentName != null && _parentName.EndsWith("Settings")) _parentName = _parentName.Substring(0, _parentName.Length - 8);
+            if (m_parentname != null && m_parentname.EndsWith("Settings")) m_parentname = m_parentname.Substring(0, m_parentname.Length - 8);
         }
 
         SetConfigRoot();
@@ -92,7 +92,7 @@ public abstract class ConfigurableObject
             var idx = configRootPath.LastIndexOf(':');
             if (idx > 0)
             {
-                if (int.TryParse(configRootPath.Substring(idx + 1), out _))
+                if (int.TryParse(configRootPath.Substring(idx + 1), out int i))
                 {
                     m_isArrayElement = true;
                 }
@@ -224,9 +224,9 @@ public abstract class ConfigurableObject
 
         if (ConfigurationRootPath != null)
         {
-            if (_parentName != null)
+            if (m_parentname != null)
             {
-                key = $"{ConfigurationRootPath}:{_parentName}:{PathTypeName}:{name}".Replace('.', ':');
+                key = $"{ConfigurationRootPath}:{m_parentname}:{PathTypeName}:{name}".Replace('.', ':');
             }
             else
             {
@@ -241,9 +241,9 @@ public abstract class ConfigurableObject
                 }
             }
         }
-        else if (_parentName != null)
+        else if (m_parentname != null)
         {
-            key = $"{_parentName}:{PathTypeName}:{name}".Replace('.', ':');
+            key = $"{m_parentname}:{PathTypeName}:{name}".Replace('.', ':');
         }
         else
         {
